@@ -1,0 +1,139 @@
+<html>
+<head>
+
+<style type="text/css">
+
+@keyframes bounceInRight {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+  }
+
+  from {
+    opacity: 0;
+    transform: translate3d(1000px, 0, 0);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+  }
+
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.bounceInRight {
+  animation: bounceInRight 0.3s;
+}
+
+.message {
+  width: 500px;
+  color: white;
+  background-color: rgb(38, 54, 90);
+  border: solid 10px black;
+  padding: 6px 6px 6px 6px;
+  align-self: flex-end;
+}
+
+.message-list {
+  font-family: Arial;
+  font-size: 12px;
+  width: 530px;
+  height: 300px;
+  background-color: black;
+  border: 4px solid blue;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.username {
+  float: left;
+}
+
+.time {
+  float: right;
+}
+
+.text {
+  float: bottom;
+}
+</style>
+
+<script type="text/javascript">
+  let messages = [];
+  function clickme() {    
+    const root = document.getElementById("root");
+    const msg = document.getElementById("msg").value;
+    document.getElementById("msg").value="";
+    root.innerHTML = "";
+    const el = document.getElementById("templatelast").cloneNode(true);
+    el.id = "message"+messages.length;
+    el.getElementsByClassName("text")[0].innerText = msg;
+    console.log(el);
+    root.appendChild(el);
+    console.log(messages);
+    if(messages.length===4) {
+      messages = messages.slice(1,messages.length);
+    }
+    
+    for(let ndx=messages.length-1; ndx>=0; ndx-- ) {
+       const el = document.getElementById("template").cloneNode(true);
+       el.getElementsByClassName("text")[0].innerText = messages[ndx];
+       el.id = "message"+ndx;
+       root.appendChild(el);
+       console.log(`appending previous el = ${el}`)
+    }
+    messages.push(msg);
+    console.log(`msg = ${msg} now messages=${messages}`)
+  }
+</script>
+
+</head>
+
+<body>
+
+  <div id="root" class="message-list">
+  </div>
+
+  <div style="display: none">
+      <div id="templatelast" class="bounceInRight message">
+        <span class="username"> Michael Chrichton: </span>
+        <span class="time"> 19:03:02 </span>
+        <br />
+        <br />
+        <div class="text">
+           Hi
+        </div>
+      </div>
+
+      <div id="template" class="message">
+        <span class="username"> Michael Chrichton: </span>
+        <span class="time"> 19:03:02 </span>
+        <br />
+        <br />
+        <div class="text" id="text">           
+        </div>
+      </div>
+
+  </div>
+
+<hr />
+<textarea id="msg"></textarea>
+<button onClick="clickme()">Click</button>
+
+</body>
+
+</html>
